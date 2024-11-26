@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    networks:
+      - ecommerce-network
+
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce-network
+
+  inventory-service:
+    build: ./inventory-service
+    container_name: inventory-service
+    ports:
+      - '3001:3001'
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce-network
+
+  review-service:
+    build: ./review-service
+    container_name: review-service
+    ports:
+      - '3002:3002'
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge
