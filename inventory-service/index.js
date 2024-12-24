@@ -9,6 +9,12 @@ const Inventory = require("./src/database/models/Inventory");
 
 //----------------------------------------------------------Routes
 
+// Health Check
+app.get("/health", (req, res) => {
+  res.status(200).send({ status: "API is running" });
+});
+
+
 // Create
 app.post("/inventory", async (req, res) => {
   try {
@@ -71,6 +77,66 @@ app.delete("/inventory/:id", async (req, res) => {
     res.status(500).send({ error: error.message });
   }
 });
+
+// Pagination
+app.get("/inventory/page", async (req, res) => {
+  try {
+    const { page = 1, limit = 10 } = req.query;
+    const inventory = await Inventory.find()
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
+    res.status(200).send(inventory);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+
+// Stats
+app.get("/inventory/stats", async (req, res) => {
+  try {
+    const totalItems = await Inventory.countDocuments();
+    const totalValue = await Inventory.aggregate([
+      { $group: { _id: null, totalValue: { $sum: "$price" } } }
+    ]);
+
+    res.status(200).send({
+      totalItems,
+      totalValue: totalValue[0]?.totalValue || 0
+    });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+
+// Soft Delete
+app.put("/inventory/archive/:id", async (req, res) => {
+  try {
+    const inventory = await Inventory.findByIdAndUpdate(
+      req.params.id,
+      { archived: true },
+      { new: true, runValidators: true }
+    );
+    if (!inventory) {
+      return res.status(404).send({ error: "Inventory item not found" });
+    }
+    res.status(200).send(inventory);
+  } catch (error) {
+    res.status(400).send({ error: error.message });
+  }
+});
+
+// Get Archived Items
+app.get("/inventory/archived", async (req, res) => {
+  try {
+    const inventory = await Inventory.find({ archived: true });
+    res.status(200).send(inventory);
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`\nService de inventory en cours d'exécution sur le port ${port}`);
