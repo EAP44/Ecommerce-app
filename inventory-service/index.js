@@ -7,15 +7,14 @@ const port = process.env.PORT || 3001;
 require("./src/database/mongoose/mongoose");
 const Inventory = require("./src/database/models/Inventory");
 
-//----------------------------------------------------------Routes
 
-// Health Check
+
 app.get("/health", (req, res) => {
   res.status(200).send({ status: "API is running" });
 });
 
 
-// Create
+
 app.post("/inventory", async (req, res) => {
   try {
     const inventory = new Inventory(req.body);
@@ -26,7 +25,6 @@ app.post("/inventory", async (req, res) => {
   }
 });
 
-// Get
 app.get("/inventory", async (req, res) => {
   try {
     const inventory = await Inventory.find();
@@ -36,7 +34,7 @@ app.get("/inventory", async (req, res) => {
   }
 });
 
-// Get with id
+
 app.get("/inventory/:id", async (req, res) => {
   try {
     const inventory = await Inventory.findById(req.params.id);
@@ -49,7 +47,7 @@ app.get("/inventory/:id", async (req, res) => {
   }
 });
 
-// Update
+
 app.put("/inventory/:id", async (req, res) => {
   try {
     const inventory = await Inventory.findByIdAndUpdate(req.params.id, req.body, {
@@ -65,7 +63,6 @@ app.put("/inventory/:id", async (req, res) => {
   }
 });
 
-// Delete
 app.delete("/inventory/:id", async (req, res) => {
   try {
     const inventory = await Inventory.findByIdAndDelete(req.params.id);
@@ -78,7 +75,6 @@ app.delete("/inventory/:id", async (req, res) => {
   }
 });
 
-// Pagination
 app.get("/inventory/page", async (req, res) => {
   try {
     const { page = 1, limit = 10 } = req.query;
@@ -92,7 +88,6 @@ app.get("/inventory/page", async (req, res) => {
 });
 
 
-// Stats
 app.get("/inventory/stats", async (req, res) => {
   try {
     const totalItems = await Inventory.countDocuments();
@@ -110,7 +105,6 @@ app.get("/inventory/stats", async (req, res) => {
 });
 
 
-// Soft Delete
 app.put("/inventory/archive/:id", async (req, res) => {
   try {
     const inventory = await Inventory.findByIdAndUpdate(
@@ -127,7 +121,6 @@ app.put("/inventory/archive/:id", async (req, res) => {
   }
 });
 
-// Get Archived Items
 app.get("/inventory/archived", async (req, res) => {
   try {
     const inventory = await Inventory.find({ archived: true });
