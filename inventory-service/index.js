@@ -25,14 +25,14 @@ app.post("/inventory", async (req, res) => {
   }
 });
 
-app.get("/inventory", async (req, res) => {
-  try {
-    const inventory = await Inventory.find();
-    res.status(200).send(inventory);
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
+// app.get("/inventory", async (req, res) => {
+//   try {
+//     const inventory = await Inventory.find();
+//     res.status(200).send(inventory);
+//   } catch (error) {
+//     res.status(500).send({ error: error.message });
+//   }
+// });
 
 
 app.get("/inventory/:id", async (req, res) => {
