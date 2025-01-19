@@ -9,7 +9,6 @@ const Product = require("./src/database/models/product");
 
 // ------------------------------------------------------------Routes
 
-// Create
 app.post('/products', async (req, res) => {
   try {
     const product = new Product(req.body);
