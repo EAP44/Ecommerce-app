@@ -12,5 +12,6 @@ mongoose
   })
 
   .catch(() => {
-    console.log(" connected not succesfuly ");
+    console.log("\n -> error connecte !!!");
+    console.log("\n -> verify the mongodb access :(");
   });
