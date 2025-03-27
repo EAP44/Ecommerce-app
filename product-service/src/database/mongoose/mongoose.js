@@ -12,5 +12,5 @@ mongoose
   })
 
   .catch(() => {
-    console.log(" connected not succesfuly ");
+    console.log(" connected not succesed ");
   });
