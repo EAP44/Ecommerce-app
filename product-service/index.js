@@ -27,7 +27,6 @@ app.get('/products', async (req, res) => {
   }
 });
 
-// Get with id
 app.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
