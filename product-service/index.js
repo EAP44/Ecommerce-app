@@ -7,7 +7,6 @@ const port = process.env.PORT || 3000;
 require("./src/database/mongoose/mongoose");
 const Product = require("./src/database/models/product");
 
-// ------------------------------------------------------------Routes
 
 app.post('/products', async (req, res) => {
   try {
