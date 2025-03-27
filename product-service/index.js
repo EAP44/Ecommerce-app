@@ -18,7 +18,6 @@ app.post('/products', async (req, res) => {
   }
 });
 
-// Get
 app.get('/products', async (req, res) => {
   try {
     const products = await Product.find();
